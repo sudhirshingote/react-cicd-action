@@ -5,13 +5,22 @@ on: [push, workflow_dispatch]
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    steps:
-   
+    steps:   
     - name: Get Code
-      run: |
-        echo "Cloning repository..."
-        echo "${{toJson(github)}}"
-        git clone "https://github.com/${{github.repository}}.git"
-        echo "Repository cloned"
-        echo  "by Bye"
+      uses: actions/checkout@v4
+      # run: |
+      #   echo "Cloning repository..."
+      #   echo "${{toJson(github)}}"
+      #   git clone "https://github.com/${{github.repository}}.git"
+      #   echo "Repository cloned"
+      #   echo  "by Bye"
+    - name: Install Node 20
+      uses: actions/setup-node@v4
+      with:
+        node-version:  20
+    - name: "print node version"
+      run: node --version
+    - name:  install dependencies
+      run: npm ci
+    - name: Run tests
+      run: npm run test
